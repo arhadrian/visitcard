@@ -77,18 +77,24 @@
 <body>
 
     <div class="card">
-        <img class="profile-img" id="card-avatar" src="avatar.jpg" alt="Profile Picture">
-        <h1 id="card-name">Loading...</h1>
-        <div class="title" id="card-title">Digital Contact Card</div>
+        <!-- If your photo has a different name, change avatar.jpg below -->
+        <img class="profile-img" src="avatar.jpg" alt="Profile Picture">
+        
+        <!-- 1. CHANGE YOUR NAME AND TITLE HERE -->
+        <h1>Adrian Vidrașcu</h1>
+        <div class="title">Lecturer, Ph. D.</div>
+        <div class="title">Architect & Researcher</div>
 
         <div class="info-section">
             <div class="info-item">
                 <div class="label">Email</div>
-                <div class="value"><a id="card-email" href="#">...</a></div>
+                <!-- 2. CHANGE YOUR EMAIL IN BOTH PLACES BELOW -->
+                <div class="value"><a href="mailto: adrian.vidrascu@gmail.com">adrian.vidrascu@gmail.com</a></div>
             </div>
             <div class="info-item">
                 <div class="label">Phone</div>
-                <div class="value"><a id="card-phone" href="#">...</a></div>
+                <!-- 3. CHANGE YOUR PHONE IN BOTH PLACES BELOW -->
+                <div class="value"><a href="tel:+40723271111">+40 723 271111</a></div>
             </div>
         </div>
 
@@ -99,34 +105,15 @@
     </div>
 
     <script>
-        // Helper function to read variables out of the website address URL
-        function getParam(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name) || "";
-        }
+        // 4. CHANGER THESE FOR THE QR CODE TO WORK CORRECTLY
+        const contactInfo = {
+            name: "Adrian Vidrașcu",
+            phone: "+40723271111", // No spaces here
+            email: "adrian.vidrascu@gmail.com"
+        };
 
-        // Pull information dynamically out of the URL parameters
-        const name = getParam('name') || "Your Name";
-        const title = getParam('title') || "Professional Title";
-        const email = getParam('email') || "name@example.com";
-        const phone = getParam('phone') || "+0000000000";
-        const imgName = getParam('img') || "avatar.jpg";
-
-        // Push data straight into the visual interface layout
-        document.getElementById('card-name').innerText = name;
-        document.getElementById('card-title').innerText = title;
-        document.getElementById('card-avatar').src = imgName;
-        
-        const emailEl = document.getElementById('card-email');
-        emailEl.innerText = email;
-        emailEl.href = "mailto:" + email;
-
-        const phoneEl = document.getElementById('card-phone');
-        phoneEl.innerText = phone;
-        phoneEl.href = "tel:" + phone.replace(/\s+/g, '');
-
-        // Build the downloadable vCard package inside the scan engine
-        const vCardString = `BEGIN:VCARD\nVERSION:3.0\nN:${name};;;\nFN:${name}\nTEL;TYPE=CELL:${phone}\nEMAIL;TYPE=INTERNET:${email}\nEND:VCARD`;
+        // Generates the vCard QR code automatically
+        const vCardString = `BEGIN:VCARD\nVERSION:3.0\nN:${contactInfo.name};;;\nFN:${contactInfo.name}\nTEL;TYPE=CELL:${contactInfo.phone}\nEMAIL;TYPE=INTERNET:${contactInfo.email}\nEND:VCARD`;
 
         new QRCode(document.getElementById("qrcode"), {
             text: vCardString,
