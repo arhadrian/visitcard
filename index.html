@@ -98,31 +98,13 @@
             </div>
         </div>
 
+       
         <div class="qr-container">
-            <div id="qrcode"></div>
-            <div class="qr-label">Scan to save contact</div>
+             <img class="qr-image" src="qr-code.png" alt="Contact QR Code">
+              <div class="qr-label">Scan to save contact</div>
         </div>
+
     </div>
 
-    <script>
-        // 4. CHANGER THESE FOR THE QR CODE TO WORK CORRECTLY
-        const contactInfo = {
-            name: "Adrian Vidrașcu",
-            phone: "+40723271111", // No spaces here
-            email: "adrian.vidrascu@gmail.com"
-        };
-
-        // Generates the vCard QR code automatically
-        const vCardString = `BEGIN:VCARD\nVERSION:3.0\nN:${contactInfo.name};;;\nFN:${contactInfo.name}\nTEL;TYPE=CELL:${contactInfo.phone}\nEMAIL;TYPE=INTERNET:${contactInfo.email}\nEND:VCARD`;
-
-        new QRCode(document.getElementById("qrcode"), {
-            text: vCardString,
-            width: 140,
-            height: 140,
-            colorDark : "#0f172a",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.M
-        });
-    </script>
 </body>
 </html>
