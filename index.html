@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Business Card</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #2563eb;
+            --border: #e2e8f0;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 380px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--border);
+            margin-bottom: 20px;
+            background-color: #e2e8f0;
+        }
+
+        h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 4px; }
+        .title { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 24px; }
+        .info-section { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 20px 0; margin-bottom: 24px; text-align: left; }
+        .info-item { margin-bottom: 12px; }
+        .info-item:last-child { margin-bottom: 0; }
+        .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 2px; font-weight: 500; }
+        .value a { color: var(--accent); text-decoration: none; font-weight: 500; font-size: 0.95rem; word-break: break-all; }
+        
+        .qr-container {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--bg-color);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        #qrcode { padding: 4px; background: #fff; }
+        .qr-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <img class="profile-img" id="card-avatar" src="avatar.jpg" alt="Profile Picture">
+        <h1 id="card-name">Loading...</h1>
+        <div class="title" id="card-title">Digital Contact Card</div>
+
+        <div class="info-section">
+            <div class="info-item">
+                <div class="label">Email</div>
+                <div class="value"><a id="card-email" href="#">...</a></div>
+            </div>
+            <div class="info-item">
+                <div class="label">Phone</div>
+                <div class="value"><a id="card-phone" href="#">...</a></div>
+            </div>
+        </div>
+
+        <div class="qr-container">
+            <div id="qrcode"></div>
+            <div class="qr-label">Scan to save contact</div>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to read variables out of the website address URL
+        function getParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name) || "";
+        }
+
+        // Pull information dynamically out of the URL parameters
+        const name = getParam('name') || "Your Name";
+        const title = getParam('title') || "Professional Title";
+        const email = getParam('email') || "name@example.com";
+        const phone = getParam('phone') || "+0000000000";
+        const imgName = getParam('img') || "avatar.jpg";
+
+        // Push data straight into the visual interface layout
+        document.getElementById('card-name').innerText = name;
+        document.getElementById('card-title').innerText = title;
+        document.getElementById('card-avatar').src = imgName;
+        
+        const emailEl = document.getElementById('card-email');
+        emailEl.innerText = email;
+        emailEl.href = "mailto:" + email;
+
+        const phoneEl = document.getElementById('card-phone');
+        phoneEl.innerText = phone;
+        phoneEl.href = "tel:" + phone.replace(/\s+/g, '');
+
+        // Build the downloadable vCard package inside the scan engine
+        const vCardString = `BEGIN:VCARD\nVERSION:3.0\nN:${name};;;\nFN:${name}\nTEL;TYPE=CELL:${phone}\nEMAIL;TYPE=INTERNET:${email}\nEND:VCARD`;
+
+        new QRCode(document.getElementById("qrcode"), {
+            text: vCardString,
+            width: 140,
+            height: 140,
+            colorDark : "#0f172a",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.M
+        });
+    </script>
+</body>
+</html>
